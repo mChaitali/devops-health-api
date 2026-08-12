@@ -31,3 +31,35 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Start application
+      run: |
+        npm start > app.log 2>&1 &
+        echo $! > app.pid
+
+    - name: Wait for application
+      run: sleep 3
+
+    - name: Verify health endpoint
+      run: curl --fail http://localhost:3000/health
+
+    - name: Show application logs
+      if: always()
+      run: cat app.log
