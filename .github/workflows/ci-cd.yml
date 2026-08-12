@@ -55,7 +55,20 @@ jobs:
         echo $! > app.pid
 
     - name: Wait for application
-      run: sleep 3
+      run: |
+        for i in {1..10}; do
+          if curl -s http://localhost:3000/health > /dev/null: then
+            echo "Application is ready"
+              exit 0
+            if
+          
+            echo "Waiting for application..."
+            sleep 2
+          done
+
+          echo "Application failed to start"
+          cat app.pg
+          exit 1
 
     - name: Verify health endpoint
       run: curl --fail http://localhost:3000/health
