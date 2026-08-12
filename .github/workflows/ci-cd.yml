@@ -60,7 +60,7 @@ jobs:
           if curl -s http://localhost:3000/health > /dev/null: then
             echo "Application is ready"
               exit 0
-            if
+            fi
           
             echo "Waiting for application..."
             sleep 2
