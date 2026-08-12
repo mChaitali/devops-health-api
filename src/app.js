@@ -11,9 +11,9 @@ app.use('/health', healthRoute);
 
 app.use((req, res) => {
   res.status(404).json({
-    success: false,
-    message: 'Route not found'
+    status: 'error',
+    error: 'Not Found'
   });
 });
 
-module.exports = app;
+module.exports = { app };

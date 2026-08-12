@@ -5,7 +5,7 @@ const config = require('../config');
 
 router.get('/', (req, res) => {
   res.status(200).json({
-    status: 'UP',
+    status: 'ok',
     timestamp: new Date().toISOString(),
     version: config.version,
     environment: config.environment
