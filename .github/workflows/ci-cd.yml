@@ -37,43 +37,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: npm
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Start application
-      run: |
-        npm start > app.log 2>&1 &
-        echo $! > app.pid
+      - name: Start application
+        run: |
+          npm start > app.log 2>&1 &
+          echo $! > app.pid
 
-    - name: Wait for application
-      run: |
-        for i in {1..10}; do
-          if curl -s http://localhost:3000/health > /dev/null: then
-            echo "Application is ready"
-            exit 0
-          fi
-          
-          echo "Waiting for application..."
-          sleep 2
-        done
+      - name: Wait for application
+        run: |
+          for i in {1..10}; do
+            if curl -s http://localhost:3000/health > /dev/null; then
+              echo "Application is ready"
+              exit 0
+            fi
 
-        echo "Application failed to start"
-        cat app.pg
-        exit 1
+            echo "Waiting for application..."
+            sleep 2
+          done
 
-    - name: Verify health endpoint
-      run: |
-        curl --fail http://localhost:3000/health
+          echo "Application failed to start"
+          cat app.log
+          exit 1
 
-    - name: Show application logs
-      if: always()
-      run: cat app.log
+      - name: Verify health endpoint
+        run: |
+          curl --fail http://localhost:3000/health
+
+      - name: Show application logs
+        if: always()
+        run: cat app.log
